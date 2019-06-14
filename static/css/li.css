@@ -1,0 +1,112 @@
+
+.item_num {
+    text-align: left;
+    font-size: 16pt;
+    padding: 2px 5px;
+}
+
+.item_unit {
+    font-size: 12pt;
+    font-style: italic;
+}
+
+/*动画*/
+.tlayui-anim {
+    -webkit-animation-duration: .8s;
+    animation-duration: .8s;
+}
+
+/*向上动画*/
+@-webkit-keyframes tlayui-up {
+    from {
+        -webkit-transform: translate3d(0, 50%, 0);
+        opacity: .3
+    }
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1
+    }
+}
+
+.tlayui-anim-up {
+    -webkit-animation-name: layui-up;
+    animation-name: layui-up
+}
+
+/*向下动画*/
+@-webkit-keyframes tlayui-down {
+    from {
+        -webkit-transform: translate3d(0, -50%, 0);
+        opacity: .3
+    }
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1
+    }
+}
+
+.tlayui-anim-down {
+    -webkit-animation-name: tlayui-down;
+    animation-name: tlayui-down
+}
+
+/*向左动画*/
+@-webkit-keyframes tlayui-left {
+    from {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        opacity: .3
+    }
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1
+    }
+}
+
+.tlayui-anim-left {
+    -webkit-animation-name: tlayui-left;
+    animation-name: tlayui-left
+}
+
+/*向右动画*/
+@-webkit-keyframes tlayui-right {
+    from {
+        -webkit-transform: translate3d(100%, 0, 0);
+        opacity: .3
+    }
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        opacity: 1
+    }
+}
+
+.tlayui-anim-right {
+    -webkit-animation-name: tlayui-right;
+    animation-name: tlayui-right
+}
+
+/*向右动画*/
+@-webkit-keyframes tlayui-fadin {
+    from {
+        opacity: .3
+    }
+    to {
+        opacity: 1
+    }
+}
+
+.tlayui-anim-fadin {
+    -webkit-animation-name: tlayui-fadin;
+    animation-name: tlayui-fadin
+}
+
+.tphoto {
+    margin: 0 auto;
+    height: 100%;
+    background-size: auto 100%;
+}
+
+.tphoto_page {
+    text-align: center;
+}
+
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="/static/photo/js/jquery-1.7.1.min.js"></script>
+    <title>BACK</title>
+</head>
+<body style="background: #010128;padding: 0">
+{#<div style="background: #010128;position:absolute;width: 100%;height: 100%;z-index: 1;padding: 0;margin: 0">#}
+{#</div>#}
+<img id="img_back" class="img_back"
+     style="margin: 0 auto;opacity: 1;width: 100%;background-size: 100% auto ;
+         position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);z-index: 2">
+
+<div style="width: 100%;height: 100%;background: #aaaaaa;opacity: 0.3;z-index: 5;position: absolute;"></div>
+</body>
+<script>
+    var i = 0;
+    var PICS = ['a', 'b'];
+
+    {#    var name = prompt("姓名", "a");#}
+    {#    var zf = prompt(name, "b");#}
+    {#    alert(name + " , " + zf);#}
+
+    /**
+     * 显示背景
+     */
+    function dis_back() {
+        $("#img_back").fadeOut(3000, function () {
+            show_back();
+        });
+    }
+
+    /**
+     * 隐藏背景
+     */
+    function show_back() {
+        document.getElementById("img_back").src = "/static/img/test/" + PICS[i] + ".jpg";
+        i = (++i) % PICS.length;
+        $("#img_back").fadeIn(3000, function () {
+            setTimeout("dis_back()", 3000);
+        });
+    }
+
+    show_back();
+</script>
+</html>

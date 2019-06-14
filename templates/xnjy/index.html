@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="cache-control" content="max-age=0"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <title>我的秒表</title>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/t_tools.js"></script>
+    <script type="text/javascript" src="/static/js/xnjy.js"></script>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+<style>
+    .share_div {
+        width: 0px;
+        height: 0px;
+        overflow: hidden;
+    }
+</style>
+<div class="share_div"><img src="/static/img/xnjy/icon.jpg"/></div>
+<div id="div_back" style="position:absolute;width: 100%;height: 100%;text-align: center;z-index: 1">
+    <img id="img_back">
+</div>
+<div id="div_cont" style="position:absolute;width: 100%;height: 100%;text-align: center;z-index: 2">
+    <!--       <button style="margin: 30% 0 0 50%;width: 40%;height:7.5%;background-size:100% 100%;border-style:none;background-color: transparent ; background-image: url('/static/img/xnjy/{{ ui_type }}/bt_index.png')"
+                onclick="goto_page(1)">
+            <div style="font-size: 15pt;color: #fd0;width: 100%;height:100%;margin-top: 5%"><b>留学生</b></div>
+        </button>
+
+        <button style="margin: 20% 0 0 50%;width: 40%;height:7.5%;background-size:100% 100%;border-style:none;background-color: transparent ; background-image: url('/static/img/xnjy/{{ ui_type }}/bt_index.png')"
+                onclick="goto_page(2)">
+            <div style="font-size: 15pt;color: #fd0;width: 100%;height:100%;margin-top: 5%"><b>准留学生</b></div>
+        </button>-->
+    <button id="bt_goto_input"
+            style="position:fixed; top:88.5%;left:30%;width: 40%;height:6%;
+                    background-size:100% 100%;background-repeat: repeat-y;
+                    font-size: 15pt;color: #fff;
+                    border-style:none;background-color: transparent ;
+                    background-image: url('/static/img/xnjy/{{ ui_type }}/bt_sure.png')"
+            onclick="goto_page()">
+        我告诉你
+    </button>
+
+</div>
+{#</div>#}
+<script>
+
+    function init_back() {
+        if (flushed) {
+            return;
+        }
+        var pic_id = Math.floor(Math.random() * 17);
+        var pic_path = '/static/img/xnjy/yellow/index' + pic_id + '.jpg';//['/static/img/xnjy/yellow/index.jpg', '/static/img/xnjy/blue/index.jpg'];
+        //var back = ['#ffc703', '#1a2749'];
+        document.getElementById('img_back').src = pic_path;
+        //       document.getElementById('img_back').style.background = '#ff0';
+        //document.body.style.background = back[pic_id];
+        //   document.body.style.background = '#ffc703`;
+    }
+
+    init_back();
+    xnjy_init();
+	jssdk_share();
+
+    //设置底部按钮宽度
+    var back = document.getElementById('div_back');
+    var back_height = $(back).height();
+    var back_width = $(back).width();
+    var bt_height = back_height * 0.06;
+    document.getElementById('bt_goto_input').style.height = bt_height + "px";
+    document.getElementById('bt_goto_input').style.width = bt_height * 3 + "px";
+    document.getElementById('bt_goto_input').style.left = ((back_width) * 0.5 - bt_height * 1.5) + "px";
+
+    function goto_page(index) {
+        var parm = get_query_string("parm", "");
+        window.location.href = 'xnjy_input?parm=' + parm;
+//        window.location.href = 'xnjy_input?';
+        {#        var obj = JSON.parse(parm);#}
+        {#        if(is_null(parm.wx_name)){#}
+        {##}
+        {#        }#}
+
+    }
+
+    {#    layui.use('laydate', function () {#}
+    {#        var laydate = layui.laydate;#}
+    {##}
+    {#        //执行一个laydate实例#}
+    {#        laydate.render({#}
+    {#            elem: '#test1' //指定元素#}
+    {#        });#}
+    {#        laydate.render({#}
+    {#            elem: '#lx_time',#}
+    {#            format: 'yyyy 年 MM 月 dd 日',#}
+    {#            value: '2017 年 12 月 22 日' //必须遵循format参数设定的格式#}
+    {#        });#}
+    {#    });#}
+
+    {#    function test() {#}
+    {#        console.log(document.getElementById("lx_time").innerHTML)#}
+    {#    }#}
+
+</script>
+<script>
+    //注意：折叠面板 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>
+

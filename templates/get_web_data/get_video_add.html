@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <title>变</title>
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript" src="/static/js/echart/echarts.min.js"></script>
+<script type="text/javascript">
+
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+
+    option = {
+        title: {
+            text: '{{ tj_type }}'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            //  data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+            data: [ {% for item in video_names %}
+                '{{ item }}',{% endfor %}
+            ]
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            {#                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日',]#}
+            data: [{% for item in x_times %}
+                '{{ item.x_time }}\n{{ item.x_date }}',{% endfor %}]
+        },
+        yAxis: {
+            type: 'value'
+        }
+        ,
+        series: [
+            {% for item in datas %}
+                {
+                    name: '{{ item.name }}',
+                    type: 'line',
+                    stack: '播放量',
+                    data: [
+                        {% for son_item in item.platform_items %}
+                            {{ son_item.num }},
+                        {% endfor %}
+                    ]
+                },
+            {% endfor %}
+            {#            {#}
+            {#                name: 'B站',#}
+            {#                type: 'line',#}
+            {#                stack: '播放量',#}
+            {#                data: [120, 132, 101, 134, 90, 230, 210]#}
+            {#            }#}
+            {#            ,#}
+            {#            {#}
+            {#                name: '今日头条',#}
+            {#                type: 'line',#}
+            {#                stack: '播放量',#}
+            {#                data: [220, 182, 191, 234, 290, 330, 310]#}
+            {#            }#}
+        ]
+    }
+    ;
+
+
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>
+</body>
+</html>

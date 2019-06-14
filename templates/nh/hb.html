@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%;width:100%;overflow:hidden;padding: 0;margin: 0">
+<head>
+    <meta charset="UTF-8">
+    <title>请选择</title>
+</head>
+<style>
+    .choose {
+        width: 22%;
+        height: 45%;
+        border: 1px solid green;
+        text-align: center;
+        color: black;
+        margin: 1%;
+        float: left;
+    }
+
+    .in_txt {
+        position: relative;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12em;
+        unselectable: on;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Chrome/Safari/Opera */
+        -khtml-user-select: none; /* Konqueror */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently
+       not supported by any browser */
+    }
+</style>
+<body style="text-align: center;width:100%;height: 100%;padding: 0;margin: 0">
+<div id="choose_items"
+     style="display: block;text-align: center;width:100%;height: 100%;padding: 0;margin: 0;z-index: 3;">
+    <div class="choose" style="background: #fff9ec" onclick="chooseCf(0)">
+        <div class="in_txt">1</div>
+    </div>
+    <div class="choose" style="background: #f2dede" onclick="chooseCf(1)">
+        <div class="in_txt">2</div>
+    </div>
+    <div class="choose" style="background: #a6e1ec" onclick="chooseCf(2)">
+        <div class="in_txt">3</div>
+    </div>
+    <div class="choose" style="background: #bbffaa" onclick="chooseCf(3)">
+        <div class="in_txt">4</div>
+    </div>
+    <br/>
+    <div class="choose" style="background: #c0a16b" onclick="chooseCf(4)">
+        <div class="in_txt">5</div>
+    </div>
+    <div class="choose" style="background: #d0e9c6" onclick="chooseCf(5)">
+        <div class="in_txt">6</div>
+    </div>
+    <div class="choose" style="background: #e0e0e0" onclick="chooseCf(6)">
+        <div class="in_txt">7</div>
+    </div>
+    <div class="choose" style="background: #01AAED" onclick="chooseCf(7)">
+        <div class="in_txt">8</div>
+    </div>
+</div>
+<div id="cfcs" style="background: #aaf;z-index: 5;width: 100%;height: 100%;position: absolute;margin: 0;display: none"
+     onclick="back2choose()">
+    <!--惩罚措施-->
+    <div id="cfcs_txt" class="in_txt" style="color: #333;font-size: 3em">
+        帝高阳之苗裔兮，朕皇考曰伯庸。<br/>
+        摄提贞于孟陬兮，惟庚寅吾以降。<br/>
+        皇览揆余初度兮，肇锡余以嘉名：<br/>
+        名余曰正则兮，字余曰灵均。<br/>
+        纷吾既有此内美兮，又重之以修能。<br/>
+        扈江离与辟芷兮，纫秋兰以为佩。<br/>
+        汩余若将不及兮，恐年岁之不吾与。<br/>
+        朝搴阰之木兰兮，夕揽洲之宿莽。<br/>
+        日月忽其不淹兮，春与秋其代序。<br/>
+        惟草木之零落兮，恐美人之迟暮。<br/>
+        不抚壮而弃秽兮，何不改乎此度?<br/>
+        乘骐骥以驰骋兮，来吾道夫先路也！<br/>
+    </div>
+</div>
+</body>
+<script>
+
+
+    //此处修改惩罚措施
+    var CFCS = [//
+        '帝高阳之苗裔兮，朕皇考曰伯庸',//
+        '摄提贞于孟陬兮，惟庚寅吾以降',//
+        '皇览揆余初度兮，肇锡余以嘉名',//
+        '名余曰正则兮，字余曰灵均',//
+        '纷吾既有此内美兮，又重之以修能',//
+        '纷吾既有此内美兮，又重之以修能',//
+        '汩余若将不及兮，恐年岁之不吾与',//
+        '朝搴阰之木兰兮，夕揽洲之宿莽'//
+    ];
+
+
+    //此处修改绕口令
+    var RKL = ['粉红墙上画凤凰,凤凰画在粉红墙<br/>' +
+    ' 红凤凰、粉凤凰<br/>' +
+    '红粉凤凰、花凤凰<br/>' +
+    ' 红凤凰、黄凤凰<br/>' +
+    '红粉凤凰、粉红凤凰、花粉花凤凰',//第一个
+        '黑化肥发灰、灰化肥发黑<br/>' +
+        '黑化肥发灰会挥发、灰化肥挥发会发黑<br/>' +
+        '化肥挥发发灰会花飞、灰化肥挥发发黑会飞花'//第二个
+    ];
+
+    var RKL_ID = 5;//绕口令
+    var rkl_index = 0;
+
+    var IS_RKL = false;
+
+    function back2choose() {
+        if (IS_RKL) {
+            document.getElementById("cfcs_txt").innerHTML = RKL[rkl_index];
+            rkl_index++;
+            if (rkl_index >= RKL.length) {
+                IS_RKL = false;
+            }
+        } else {
+            document.getElementById("cfcs").style.display = "none";
+            document.getElementById("choose_items").style.display = "block";
+        }
+    }
+
+
+    function chooseCf(id) {
+        if (RKL_ID === id) {
+            rkl_index = 0;
+            IS_RKL = true;
+        }
+        document.getElementById("cfcs_txt").innerHTML = CFCS[id];
+        document.getElementById("cfcs").style.display = "block";
+        document.getElementById("choose_items").style.display = "none";
+        //选中的无法再选
+        document.getElementsByClassName("choose")[id].display = "none";
+        document.getElementsByClassName("choose")[id].onclick = undefined;
+    }
+</script>
+</html>

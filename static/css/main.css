@@ -1,0 +1,22 @@
+﻿
+.snowBigBg {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	/*z-index:-1;*/
+	z-index:1;
+	margin: 0 auto;
+	/*background: #f00;*/
+}
+
+.snowbg {
+	height: 90%;
+	width: 80%;
+	margin: 0 auto;
+	-moz-user-select:none;
+	-webkit-user-select:none;
+	user-select:none;    
+	
+	/*background: #00f;*/
+}
+

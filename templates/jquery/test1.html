@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>test1</title>
+    <script src="/static/js/jquery.js"></script>
+
+    <!-- 使用JS原生语法 -->
+    <script type="text/javascript">
+        window.onload = function () {
+            // 通过原生JS语法获取id为imooc1的元素p
+            var p = document.getElementById('imooc1');
+            // 将元素p在html中内容改变
+            p.innerHTML = 'P1：您好！通过慕课网学习jQuery才是最佳的途径';
+            // 将元素p的内容颜色改为红色
+            p.style.color = 'red';
+        };
+        <!-- 使用jQuery语法 -->
+        $(document).ready(function () {
+            /**
+             * 通过jQuery语法获取id为imooc2的元素获得一个jQuery对象
+             * 调用该对象的html()方法进行更改内容
+             * 调用该对象的css()方法进行更改颜色样式
+             */
+            var $p = $('#imooc2');
+            $p.html('P2：您好！通过慕课网学习jQuery才是最佳的途径').css('color', 'red');
+        });
+    </script>
+</head>
+
+<body>
+<p id="imooc1"></p>
+<p id="imooc2"></p>
+<div>元素一</div>
+<div>元素二</div>
+<div>元素三</div>
+<script>
+    {#    var $div = $('div'); //jQuery对象#}
+    {#    console.log($div);#}
+    {#    var div = $div[0];#}
+    {#    div.style.color = 'red'; //操作dom对象的属性#}
+
+    var div = document.getElementsByTagName('div'); //dom对象
+    //将dom节点div转化为$div的jquery对象
+    $div = $(div);
+    var $first = $div.first(); //找到第一个div元素
+    $first.css('color', 'green'); //给第一个元素设置颜色
+
+</script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>我的秒表</title>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript" src="/static/js/xnjy.js"></script>
+    <script type="text/javascript" src="/static/js/t_tools.js"></script>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <script src="/static/layui/layui.js"></script>
+</head>
+<body>
+<style type="text/css">
+    .input_line {
+        display: block;
+        width: 90%;
+        margin: 4% 3% 0 5%;
+        height: 8%;
+    }
+
+    .flag {
+        font-size: 14pt;
+        margin: 0 auto;
+        width: 15%;
+        text-align: left;
+        float: left;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .input_cont {
+        margin: 0 0 0 2%;
+        width: 45%;
+        padding: 4px;
+        border-radius: 5px;
+        border-width: 0;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .textarea_cont {
+        margin: 0 0 0 2%;
+        width: 45%;
+        padding: 4px;
+        border-radius: 5px;
+        border-width: 0;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+</style>
+<div>
+    <div id="div_back" style="position:absolute;width: 100%;height: 100%;text-align: center;z-index: 1">
+        <img id="img_back" src="/static/img/xnjy/{{ ui_type }}/input.jpg">
+    </div>
+    <div id="div_cont" style="position:absolute;width: 100%;height: 100%;z-index: 2">
+        <div class="input_line" style="margin-top: 45%">
+            <div class="flag"><b>人物</b></div>
+            <input id="input_nick_name" class="layui-input-block input_cont" type="text" name="title"
+                   placeholder="请输入您的昵称" style="width:44%"
+                   value="{{ xnjy.people_id.nick_name }}" autocomplete="on">
+            <img src="/static/img/search.png" height="5%" width="15%" style="display:none;width:auto"
+                 onclick="get_value()">
+        </div>
+
+        <div class="input_line">
+            <div class="flag"><b>时间</b></div>
+            <input class="layui-input-block input_cont"
+                   readonly="true" id="input_lx_time"
+                   style="display:inline;float: left;border-radius: 0;padding:0 4px 0 4px"
+                   onBlur="setTimeout('upded_date()',500)"/>
+            <div class="layui-form input_cont"
+                 style="margin-left:2%;width: 28%;float:left;display:inline;z-index: 3;padding:0">
+                <select id="sel_time" class="layui-input-block" style="padding:0">
+                    <option>抵达</option>
+                    <option>将去</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input_line" style="height: 12%;">
+            <div class="flag" style="display:inline;float: left;"><b>地点</b></div>
+            <textarea class="layui-input-block textarea_cont"
+                      style="width: 77%;height: 80%;display:inline;float: left;"
+                      id="input_school" placeholder="请输入您的国家与学校或其他(限12字)">{{ xnjy.people_id.school }}</textarea>
+        </div>
+        <br/>
+
+        <div class="input_line" style="height: 18%;text-align: left;margin-top:0%">
+            <div style="font-size: 12pt;width: 100%"><b>我想说</b></div>
+            <textarea class="layui-input-block  textarea_cont"
+                      style=" margin: 1% 0 0 0;width: 97%;height:80%;display:block;
+                      padding: 4px;border-radius: 5px;border-width: 0;"
+                      id="input_jy" placeholder="对自己说的话和未来的展望(限40字)">{{ xnjy.people_id.jy }}</textarea>
+        </div>
+
+        <button id="bt_goto_input"
+                style="position:fixed; top:88.5%;left:30%;width: 40%;height:6%;
+                        background-size:100% 100%;background-repeat: repeat-y;
+                        font-size: 15pt;color: #fff;
+                        border-style:none;background-color: transparent ; background-image: url('/static/img/xnjy/{{ ui_type }}/bt_sure.png')"
+                onclick="goto_page()">
+            开始计时
+        </button>
+    </div>
+</div>
+<script>
+    xnjy_init();
+	jssdk_share();
+
+    //设置底部按钮宽度
+    var back = document.getElementById('div_back');
+    var back_height = $(back).height();
+    var back_width = $(back).width();
+    var bt_height = back_height * 0.06;
+    document.getElementById('bt_goto_input').style.height = bt_height + "px";
+    document.getElementById('bt_goto_input').style.width = bt_height * 3 + "px";
+    document.getElementById('bt_goto_input').style.left = back_width * 0.5 - back_height * 0.09 + "px";
+
+    layui.use('layer', function () {
+
+    });
+
+    layui.use('form', function () {
+        {#         document.getElementById("select_from").style.borderRadius = "8px";#}
+    });
+
+    var laydate;
+    layui.use('laydate', function () {
+        laydate = layui.laydate;
+
+        var lx_time = {{ xnjy.lx_time }}+"";
+        lx_time = lx_time.toString();
+        if (lx_time.length < 8) {
+            lx_time = "20180101";
+        }
+
+        laydate.render({
+            elem: '#input_lx_time',
+            format: 'yyyy 年 MM 月 dd 日',
+            value: lx_time.substring(0, 4) + ' 年 ' + lx_time.substring(4, 6) + ' 月 ' + lx_time.substring(6, 8) + ' 日' //必须遵循format参数设定的格式
+        });
+    });
+
+    function get_value() {
+        var nick_name = document.getElementById("input_nick_name").value;
+        nick_name = nick_name.toString();
+        if (nick_name.length <= 0) {
+            return;
+        }
+        $.ajax({
+            url: "../lxdzx/xnjy_get_xnjy?parm={\"nick_name\":\"" + nick_name + "\"}",
+            success: function (data) {
+                console.log(data);
+                data = JSON.parse(data);
+                if (data.success) {
+                    var res = data.data.res;
+                    console.log(res);
+                    document.getElementById("input_school").value = res.school;
+                    document.getElementById("input_jy").value = res.jy;
+                    var lx_time = res.lx_time;
+                    layui.laydate.render({
+                        elem: '#input_lx_time',
+                        format: 'yyyy 年 MM 月 dd 日',
+                        value: lx_time.substring(0, 4) + ' 年 ' + lx_time.substring(4, 6) + ' 月 ' + lx_time.substring(6, 8) + ' 日' //必须遵循format参数设定的格式
+                    });
+                }
+            }
+        });
+    }
+
+    {#    get_value();#}
+
+    function goto_page(index) {
+        var parm = get_query_string("parm", "");
+        var nick_name = document.getElementById("input_nick_name").value;
+        nick_name = nick_name.toString();
+		 if  (nick_name.length <= 0) {
+			layui.layer.open({
+				title: '输入有误',
+				content: '姓名不得为空'
+			});
+			return;
+		}
+
+
+        var lx_time = document.getElementById("input_lx_time").value;
+        lx_time = lx_time.toString();
+        var s = "";
+        for (var i = 0; i < lx_time.length; i++) {
+            var ts = lx_time[i];
+            if ((ts > '9') || (ts < '0')) {
+                continue;
+            } else {
+                s += ts;
+            }
+        }
+        lx_time = s;
+        var school = document.getElementById("input_school").value;
+        school = school.toString();
+        if  ((school.length <= 0)||(school.length > 12)) {
+            layui.layer.open({
+                title: '输入有误',
+                content: '国家学校名称必须为1~12字'
+            });
+            return;
+        }
+        var jy = document.getElementById("input_jy").value;
+        jy = jy.toString();
+        if ((jy.length <= 0)||(jy.length >= 40)) {
+            layui.layer.open({
+                title: '输入有误',
+                content: '新年寄语必须为1~40字'
+            });
+            return;
+        }
+        //TODO 输入校验
+        var send_data = new Object();
+        if (parm.length > 3) {
+            send_data = JSON.parse(parm);
+        }
+        send_data.nick_name = nick_name;
+        send_data.lx_time = lx_time;
+        send_data.school = school;
+        send_data.jy = jy;
+        parm = JSON.stringify(send_data);
+		parm = parm.replace("{","%7b").replace("}","%7d");
+        console.log(parm);
+        $.ajax({
+            url: "../lxdzx/xnjy_save_xnjy?parm=" + parm,
+            success: function (data) {
+                console.log(data);
+                window.location.href = 'xnjy_show?parm=' + parm;
+            }
+        });
+
+    }
+
+    function upded_date() {
+        var lx_time = document.getElementById("input_lx_time").value;
+        lx_time = lx_time.toString();
+        var s = "";
+        for (var i = 0; i < lx_time.length; i++) {
+            var ts = lx_time[i];
+            if ((ts > '9') || (ts < '0')) {
+                continue;
+            } else {
+                s += ts;
+            }
+        }
+        lx_time = s;
+        var curr_time = date_format(new Date(), "yyyyMMdd");
+        console.log(curr_time + " , " + lx_time);
+        var index = 0;
+        if (lx_time > curr_time) {
+            index = 1;
+        } else {
+            index = 0;
+        }
+        console.log(index);
+        /*	var opts = document.getElementById("sel_time").getElementsByTagName("option");
+            for (var i = 0; i<opts.length; i++){
+                console.log(opts[i].value + " , " + index);
+                if (opts[i].value == index){
+                    opts[i].selected=true;
+                    break;
+                }
+            }  */
+        $("sel_time").find("option[" + index + "]").attr("selected", true);
+    }
+
+</script>
+</body>
+</html>
+
