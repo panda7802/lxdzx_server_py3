@@ -36,7 +36,7 @@ class VideoNameInfos(models.Model):
 
 
 class PlatformStatistics(models.Model):
-    vid = models.ForeignKey(VideoNameInfos,on_delete=models.CASCADE)
+    vid = models.ForeignKey(VideoNameInfos, on_delete=models.CASCADE)
     clicks = models.BigIntegerField('总点击量', default=0)
     fans = models.BigIntegerField('总粉丝数', default=0)
     follows = models.BigIntegerField('关注数', default=0)
@@ -92,7 +92,7 @@ class VideoDetail(models.Model):
     """
     视频详情
     """
-    video = models.ForeignKey(VideoList,on_delete=models.CASCADE)
+    video = models.ForeignKey(VideoList, on_delete=models.CASCADE)
     comment = models.CharField(max_length=255)  # 评论数
     video_review = models.CharField(max_length=255)  # 弹幕数
     favorites = models.CharField(max_length=255)  # 收藏量

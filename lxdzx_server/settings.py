@@ -52,7 +52,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,11 +61,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'video_manager.apps.VideoManagerConfig',
     'get_web_data.apps.GetWebDataConfig',
+    'dzdp.apps.DzdpConfig',
     'love.apps.LoveConfig',
     'trans.apps.TransConfig',
     # 'scrapys.apps.ScrapysConfig',
 
-]
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
