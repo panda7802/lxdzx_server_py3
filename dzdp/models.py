@@ -60,6 +60,7 @@ class DzdpShop(models.Model):
     good = models.IntegerField('好评', default=0)
     common = models.IntegerField('中评', default=0)
     bad = models.IntegerField('差评', default=0)
+    # TODO 一个商店可能有多种类型
     type = models.ForeignKey(DzdpType, on_delete=models.CASCADE)
     city = models.ForeignKey(DzdpCity, on_delete=models.CASCADE)
     phone = models.CharField('电话', max_length=64)
@@ -70,4 +71,4 @@ class DzdpShop(models.Model):
     bak = models.CharField('备份', default='', blank=True, max_length=1023)
 
     def __str__(self):
-        return self.name + " , " + self.type.name
+        return "%s : %s" % (self.name, self.type.name)
