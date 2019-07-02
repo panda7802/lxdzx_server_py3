@@ -72,3 +72,15 @@ class DzdpShop(models.Model):
 
     def __str__(self):
         return "%s : %s" % (self.name, self.type.name)
+
+
+class DzdpShopType(models.Model):
+    """
+    大众点评商店和类型的关联
+    """
+    type = models.ForeignKey(DzdpType, on_delete=models.CASCADE)
+    shop = models.ForeignKey(DzdpShop, on_delete=models.CASCADE)
+    bak = models.CharField('备份', default='', blank=True, max_length=1023)
+
+    def __str__(self):
+        return "%s : %s" % (self.type.name, self.shop.name)
