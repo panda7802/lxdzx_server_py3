@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 
 import logging
+import os
 import traceback
 
 import datetime
@@ -290,5 +291,19 @@ LIMIT %s;
                  "get_time_over": get_time_over}
     # print show_data
 
+    s = t.render(show_data)
+    return s
+
+
+def get_trt_ticket():
+    os.system("python3 /home/pangt/res_dir/get_tickets.py")
+    f = open("/home/pangt/res_dir/res.txt")
+    f.seek(0)
+    res = f.read()
+    # res = res.replace("\n", "<br/>")
+    # print(res)
+
+    t = get_template('get_web_data/get_trt_ticket.html')
+    show_data = {'res': res}
     s = t.render(show_data)
     return s

@@ -15,6 +15,17 @@ def get_web_data(request, action):
     :return:
     """
     logging.debug(request.get_full_path())
+    try:
+        if action == "get_trt_ticket":
+            s = get_trt_ticket()
+    except Exception as e:
+        logging.error(e)
+        traceback.print_exc()
+        s = t_url_tools.get_response_str({}, success=False, msg=action + "异常",
+                                         err_code=t_url_tools.ERR_CODE_EXCEPTION)
+    finally:
+        return HttpResponse(s)
+
     # 校验
     json_obj, session_res = t_url_tools.parse_url(request)
     s = ""
