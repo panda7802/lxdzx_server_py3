@@ -67,7 +67,8 @@ class DzdpShop(models.Model):
     url = models.CharField('url', default='', blank=True, max_length=1023)
     lon = models.FloatField('经度', default=0)
     lat = models.FloatField('纬度', default=0)
-    lastGetTime = models.DateTimeField('上次爬取时间', default=timezone.now)
+    # lastGetTime = models.DateTimeField('上次爬取时间', default=timezone.now)
+    lastGetTime = models.DateTimeField('上次爬取时间', auto_now=True)
     bak = models.CharField('备份', default='', blank=True, max_length=1023)
 
     def __str__(self):
