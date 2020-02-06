@@ -60,3 +60,7 @@ http://127.0.0.1:8888/dzdp/get_types_view?parm={"pid":1}
 
 http://127.0.0.1:8889/dzdp/phb?parm={"tid":77,"page":0,"evaluation":100,"min_price":50,"max_price":100}
 http://127.0.0.1:8889/dzdp/phb_view?parm={"tid":77,"page":0,"evaluation":100,"min_price":50,"max_price":100}
+http://127.0.0.1:8000/dzdp/get_foods
+
+
+http://127.0.0.1:8000/get_ncov/get_confirmed?parm={"limit":10}

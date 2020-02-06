@@ -9,6 +9,7 @@ import os
 import traceback
 
 import datetime
+from imp import reload
 
 from django.db import connection
 from django.http import HttpResponse
@@ -19,6 +20,10 @@ from django.template.loader import get_template
 
 from get_web_data.models import PlatformStatistics, VideoNameInfos, VideoDetail
 from tutils import t_url_tools
+
+import sys  
+reload(sys)  
+# sys.setdefaultencoding('utf8')
 
 # 1:点击率
 TJ_TYPE_CLICK = 1
@@ -296,12 +301,13 @@ LIMIT %s;
 
 
 def get_trt_ticket():
-    os.system("python3 /home/pangt/res_dir/get_tickets.py")
-    f = open("/home/pangt/res_dir/res.txt")
+    obj_path="/home/ubuntu/res_dir/res.txt"
+    #p = os.system("python3 /home/ubuntu/res_dir/get_tickets.py > %s" % obj_path)
+    f = open(obj_path)
     f.seek(0)
     res = f.read()
     # res = res.replace("\n", "<br/>")
-    # print(res)
+    logging.debug(res)
 
     t = get_template('get_web_data/get_trt_ticket.html')
     show_data = {'res': res}

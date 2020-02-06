@@ -20,8 +20,9 @@ def get_web_data(request, action):
             s = get_trt_ticket()
     except Exception as e:
         logging.error(e)
+        logging.error(traceback.format_exc())
         traceback.print_exc()
-        s = t_url_tools.get_response_str({}, success=False, msg=action + "异常",
+        s = t_url_tools.get_response_str({}, success=False, msg="--- " + action + "异常",
                                          err_code=t_url_tools.ERR_CODE_EXCEPTION)
     finally:
         return HttpResponse(s)

@@ -64,6 +64,7 @@ INSTALLED_APPS = (
     'dzdp.apps.DzdpConfig',
     'love.apps.LoveConfig',
     'trans.apps.TransConfig',
+    'ncov.apps.NcovConfig',
     # 'scrapys.apps.ScrapysConfig',
 
 )

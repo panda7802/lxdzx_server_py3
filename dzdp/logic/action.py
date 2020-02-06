@@ -69,11 +69,13 @@ def get_phb(json_obj):
           ' and a.price <= % d ' \
           ' order by a.hpl desc limit %d,%d' \
           % (type_id, evaluation, min_price, max_price, page * page_count, page_count)
-    print(sql)
+    logging.debug(sql)
     shops = DzdpShop.objects.raw(sql)
-    if shops.__len__() <= 0:
-        s = t_url_tools.get_response_str({}, success=False, msg="商店不存在", err_code=t_url_tools.ERR_CODE_DATA)
-        return s
+    #logging.debug(shops)
+    #if shops.__len__() <= 0:
+    #if len(shops) <= 0:
+    #    s = t_url_tools.get_response_str({}, success=False, msg="商店不存在", err_code=t_url_tools.ERR_CODE_DATA)
+    #    return s
 
     res = []
     for shop in shops:

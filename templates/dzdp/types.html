@@ -10,12 +10,12 @@
     <title>{{ type_name }}</title>
 </head>
 
-<body>
-<table border="1" style="margin-left:5%;width: 90%;height: 60%;text-align: center">
+<body style="font-size:24pt">
+<table border="1" style="margin-left:5%;width: 90%;height: 70%;text-align: center">
     {% for item in res %}
         {#    divisibleby标签的意义是用后面的参数去除，除尽为True，否则为False#}
-        {% if forloop.counter0|divisibleby:4 %}
-            <tr id="item{{ forloop.counter }}">
+        {% if forloop.counter0|divisibleby:3 %}
+            <tr id="item{{ forloop.counter }}" style="height:8%">
         {% endif %}
     <td>
         <div id="name{{ forloop.counter }}" onclick="get_shops({{ item.id }})">
@@ -24,15 +24,17 @@
             {#            </a>#}
         </div>
     </td>
-    {% if forloop.counter|divisibleby:4 %}
+    {% if forloop.counter|divisibleby:3 %}
         </tr>
     {% endif %}
     {% endfor %}
 </table>
-<div style="margin-left: 5%">最少评价数&nbsp;&nbsp;&nbsp;<input type="text" id="evaluation" value="1000"/></div>
-<div style="margin-left: 5%">最低价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="min_price"
+<br/>
+
+<div style="margin-left: 5%">最少评价数&nbsp;&nbsp;&nbsp;<input type="text" id="evaluation" value="1000" style="font-size:20pt"/></div>
+<div style="margin-left: 5%">最低价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="min_price"  style="font-size:20pt"
                                                                                   value="50"/></div>
-<div style="margin-left: 5%">最高价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="max_price"
+<div style="margin-left: 5%">最高价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="max_price"  style="font-size:20pt"
                                                                                   value="100"/></div>
 </body>
 <script>

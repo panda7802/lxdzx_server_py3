@@ -23,4 +23,3 @@ class TEncryptDecrypt :
     
 if "__main__" == __name__ :
     s_md5 = TEncryptDecrypt.md5_str("hello1234")
-    print s_md5

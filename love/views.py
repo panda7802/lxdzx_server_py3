@@ -2,17 +2,24 @@
 from __future__ import unicode_literals
 
 import logging
+import sys
 import traceback
 
-from django.http import HttpResponse
+import os
+from imp import reload
+
+from django.http import HttpResponse, FileResponse
+from django.shortcuts import render
+
 # Create your views here.
 from django.template.loader import get_template
+from scrapy import cmdline
 
 from love.models import ZF
 from tutils import t_url_tools
+from tutils.t_global_data import TGlobalData
 
-
-# reload(sys)
+reload(sys)
 # sys.setdefaultencoding('utf-8')
 
 
@@ -46,7 +53,6 @@ def marry(request):
 
 
 def love_action(request, action):
-    print(request.get_full_path())
     logging.debug(request.get_host() + " -- " + request.get_full_path())
     s = ""
     try:

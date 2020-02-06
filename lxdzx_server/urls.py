@@ -20,6 +20,7 @@ from dzdp.views import dzdp
 from get_web_data.views import get_dgtj, get_dgtj_echart, get_web_data
 from love.views import *
 from lxdzx_server import settings
+from ncov.views import get_ncov
 from trans.views import *
 from video_manager.views import *
 from django.views.static import serve
@@ -49,6 +50,8 @@ urlpatterns = [
     url(r'^loveaction/(.*)$', love_action),
     url(r'^get_web_data/(.*)$', get_web_data),
     url(r'^dzdp/(.*)$', dzdp),
+    url(r'^get_ncov/(.*)$', get_ncov),
+
     # url(r'^get_dgtj/(.*)$', get_dgtj),
     # url(r'^get_dgtj_echart/(.*)$', get_dgtj_echart)
     # url(r'^tjbili/(.*)$', tjbili),
