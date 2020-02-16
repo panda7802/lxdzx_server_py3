@@ -64,3 +64,5 @@ http://127.0.0.1:8000/dzdp/get_foods
 
 
 http://127.0.0.1:8000/get_ncov/get_confirmed?parm={"limit":10}
+
+http://127.0.0.1:8000/get_ncov/get_pro_his?parm={"limit":10}
