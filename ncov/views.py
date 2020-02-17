@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from ncov.logic.actions import get_confirmed, get_pro_his
+from ncov.logic.actions import get_confirmed, get_pro_his, get_single_pro_his
 from tutils import t_url_tools
 from tutils.t_url_tools import ERR_CODE_PARM
 
@@ -30,6 +30,8 @@ def get_ncov(request, action):
                 s = get_confirmed(json_obj)
             elif action == "get_pro_his":
                 s = get_pro_his(json_obj)
+            elif action == "get_single_pro_his":
+                s = get_single_pro_his(json_obj)
             else:
                 s = t_url_tools.get_response_str(None, msg=action + "不存在", err_code=ERR_CODE_PARM, success=False)
     except Exception as e:

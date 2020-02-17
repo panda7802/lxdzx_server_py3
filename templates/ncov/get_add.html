@@ -9,14 +9,12 @@
 <div id="main" style="width: 95%;height:90%;position: absolute;text-align: center"></div>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
+    const myChart = echarts.init(document.getElementById('main'));
 
     // 指定图表的配置项和数据
-    var option = {
+    const option = {
             title: {
-                text: '{{ type }}'
             },
-            tooltip: {},
             tooltip: {
                 trigger: 'axis'
             },
@@ -43,7 +41,7 @@
                     name: '{{ res_item.pro_name }}',
                     type: 'line',
                     data: [{% for item in res_item.confirmedNum %}
-                        '{{ item }}1',{% endfor %}] },
+                        '{{ item }}',{% endfor %}] },
                 {% endfor %}
             ]
         }

@@ -50,6 +50,15 @@ def get_pro_his(json_obj):
     :return:
     """
     max = json_obj['limit']
+    # pros = "'32','31'"
+    pros = ""
+    for i in range(10, 99):
+        # 去掉湖北
+        if i == 42:
+            continue
+        pros = "%s'%d'," % (pros, i)
+    pros = pros[:len(pros) - 1]
+    print(pros)
     sql = '''
         select c.name,
            (a.confirmedNum - b.confirmedNum) as '新增确诊',
@@ -63,9 +72,10 @@ def get_pro_his(json_obj):
     where date(a.s_date, 'start of day', '-1 days') = b.s_date
       and a.pid = b.pid
       and a.pid = c.mid
-      and a.pid not in ('42')
+      and a.pid in (%s)
+      and b.s_date >= (select min(s_date) from ncov_cnovhisinfo where pid in (%s) group by pid  order by s_date desc limit 1)
     order by a.pid, a.s_date
-    '''
+    ''' % (pros, pros)
     print(sql)
     cursor_data = connection.cursor()
     cursor_data.execute(sql)
@@ -83,15 +93,9 @@ def get_pro_his(json_obj):
     last_pro_name = ""
     res_item = {'pro_name': '', "confirmedNum": [], "curesNum": [],
                 "deathsNum": [], "s_dates": []}
-    # 新增确诊
-    confirmed_num = []
-    # 新增治愈
-    curesNum = []
-    # 新增死亡
-    deathsNum = []
     s_dates = []
     for item in datas:
-        print(item)
+        # print(item)
         if not s_dates.__contains__(item[4]):
             s_dates.append(item[4])
         # 发现新的省则加一项
@@ -111,5 +115,72 @@ def get_pro_his(json_obj):
     show_data = {'type': '新增数', 'res': res, "s_dates": s_dates}
     print(show_data)
     t = get_template('ncov/get_add.html')
+    s = t.render(show_data)
+    return s
+
+
+def get_single_pro_his(json_obj):
+    print("----1----")
+    """
+    获取单个省份历史变化
+    :param json_obj:
+    :return:
+    """
+    pros = json_obj['pro']
+    # pros = "'32','31'"
+    sql = '''
+        select c.name,
+           (a.confirmedNum - b.confirmedNum) as '新增确诊',
+           (a.curesNum - b.curesNum) as '新增治愈',
+           (a.deathsNum - b.deathsNum) as '新增死亡',
+           a.s_date,
+           a.*
+    from ncov_cnovhisinfo a,
+         ncov_cnovhisinfo b,
+         ncov_zoneinfo c
+    where date(a.s_date, 'start of day', '-1 days') = b.s_date
+      and a.pid = b.pid
+      and a.pid = c.mid
+      and a.pid in (%s)
+      and b.s_date >= (select min(s_date) from ncov_cnovhisinfo where pid in (%s) group by pid  order by s_date desc limit 1)
+    order by a.pid, a.s_date
+    ''' % (pros, pros)
+    print(sql)
+    cursor_data = connection.cursor()
+    cursor_data.execute(sql)
+    # raw = cursor_data.fetchone()  # 返回结果行游标直读向前，读取一条
+    datas = cursor_data.fetchall()  # 读取所有
+    if None is datas:
+        return "EMPTY"
+
+    # 市名
+    pro_names = []
+
+    s_dates = []
+    print(datas)
+    res = []
+    last_pro_name = ""
+    res_item = {'pro_name': '', "confirmedNum": [], "curesNum": [],
+                "deathsNum": [], "s_dates": []}
+    s_dates = []
+    for item in datas:
+        # print(item)
+        if not s_dates.__contains__(item[4]):
+            s_dates.append(item[4])
+        # 发现新的省则加一项
+        if last_pro_name != item[0]:
+            res_item = {'pro_name': item[0], "confirmedNum": [], "curesNum": [],
+                        "deathsNum": [], "s_dates": []}
+            res.append(res_item)
+
+        pro_names.append(item[0])
+        res_item['confirmedNum'].append(item[1])
+        res_item['curesNum'].append(item[2])
+        res_item['deathsNum'].append(item[3])
+        res_item['s_dates'].append(item[4])
+        last_pro_name = item[0]
+    show_data = {'type': '新增数', 'res': res, "s_dates": s_dates}
+    print(show_data)
+    t = get_template('ncov/get_single_add.html')
     s = t.render(show_data)
     return s
