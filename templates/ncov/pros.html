@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" style="height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="cache-control" content="max-age=0"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <title>{{ type_name }}</title>
+    <style>
+        .sel {
+            background: #00F7DE;
+        }
+
+        .nosel {
+            background: #761c19;
+        }
+
+        .yongyin {
+            width: 200px;
+            text-align: center;
+            line-height: 80%;
+            padding: 0.6em;
+        {#font: 16px Arial, sans-serif bold;#} font-style: normal;
+            text-decoration: none;
+            margin: 2px;
+            vertical-align: text-bottom;
+            zoom: 1;
+            outline: none;
+            font-size: 24pt;
+        {#font-size-adjust: none;#} font-stretch: normal;
+            border-radius: 50px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+            text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+            color: #fefee9;
+            border: 0.2px solid #2299ff;
+            background-repeat: repeat;
+            background-size: auto;
+            background-origin: padding-box;
+            background-clip: padding-box;
+            background-color: #3399ff;
+            background: linear-gradient(to bottom, #eeeff9 0%, #3399ff 100%);
+        }
+
+        .yongyin:hover {
+            background: #268DFF;
+        }
+    </style>
+</head>
+
+<body style="font-size:24pt;-webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;">
+<table border="1" style="margin-left:5%;width: 90%;height: 70%;text-align: center">
+    {% for item in pros %}
+        {#    divisibleby标签的意义是用后面的参数去除，除尽为True，否则为False#}
+        {% if forloop.counter0|divisibleby:3 %}
+            <tr id="item{{ forloop.counter }}" style="height:8%">
+        {% endif %}
+    <td>
+        <div id="name_{{ item.mid }}" onclick="sel_pro('name_{{ item.mid }}')" class="sel">
+            {{ item.name }}
+        </div>
+    </td>
+    {% if forloop.counter|divisibleby:3 %}
+        </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+<br/>
+<div style="display: inline">
+    <div style="display: inline" class="sel" onclick="sel_all()">全选中</div>
+    <div style="display: inline" class="nosel" onclick="sel_none()">全不选</div>
+</div>
+<br/>
+<div>
+    <label><input type="checkbox" id="have_confirmed" checked/>查看确诊<br/></label>
+    <label> <input type="checkbox" id="have_cures"/>查看治愈<br/></label>
+    <label> <input type="checkbox" id="have_deaths"/>查看死亡<br/></label>
+    {#    <button class="yongyin" style="display: inline" onclick="show_res()">查看确诊</button>#}
+    {#    <button class="yongyin" style="display: inline" onclick="show_res()">全查治愈</button>#}
+    {#    <button class="yongyin" style="display: inline" onclick="show_res()">全查死亡</button>#}
+    <button class="yongyin" style="display: inline" onclick="show_res()">显示结果</button>
+</div>
+</body>
+<script>
+
+    function sel_pro(id) {
+        const className = document.getElementById(id).className;
+        if (className === "sel") {
+            document.getElementById(id).className = "nosel";
+        } else {
+            document.getElementById(id).className = "sel";
+        }
+        get_sel_pros();
+    }
+
+    var sel_pros = "";
+    {#获取选中省份#}
+
+    const pro_ids = Array();
+    {% for item in pros %}
+        pro_ids.push({{ item.mid }});
+    {% endfor %}
+    console.log(pro_ids);
+
+    function sel_all() {
+        for (let i in pro_ids) {
+            document.getElementById("name_" + pro_ids[i]).className = "sel";
+        }
+        get_sel_pros();
+    }
+
+    function sel_none() {
+        for (let i in pro_ids) {
+            document.getElementById("name_" + pro_ids[i]).className = "nosel";
+        }
+        get_sel_pros();
+    }
+
+    function get_sel_pros() {
+        sel_pros = "";
+        for (let i in pro_ids) {
+            const className = document.getElementById("name_" + pro_ids[i]).className;
+            if (className === "sel") {
+                sel_pros += pro_ids[i] + ",";
+            }
+        }
+        if (sel_pros.endsWith(",")) {
+            sel_pros = sel_pros.substring(0, sel_pros.length - 1);
+        }
+        console.log("sel_pros = " + sel_pros);
+    }
+
+    {#显示结果#}
+
+    function show_res() {
+        const have_confirmed = document.getElementById("have_confirmed").checked;
+        const have_cures = document.getElementById("have_cures").checked;
+        const have_deaths = document.getElementById("have_deaths").checked;
+        const url = './get_single_pro_his?parm={"pro":"' + sel_pros + '"}' +
+            '&have_confirmed=' + have_confirmed +
+            '&have_cures=' + have_cures +
+            '&have_deaths=' + have_deaths;
+        console.log(url);
+        window.location.href = url;
+    }
+
+    get_sel_pros();
+
+</script>
+</html>
