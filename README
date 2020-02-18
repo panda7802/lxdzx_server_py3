@@ -67,5 +67,6 @@ http://127.0.0.1:8000/get_ncov/get_confirmed?parm={"limit":10}
 
 http://127.0.0.1:8000/get_ncov/get_pro_his?parm={"limit":10}
 
+http://127.0.0.1:8000/get_ncov/get_pros
 
 http://127.0.0.1:8000/get_ncov/get_single_pro_his?parm={"pro":"32"}

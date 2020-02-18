@@ -1,6 +1,8 @@
 from django.db import connection
 from django.template.loader import get_template
 
+from ncov.models import ZoneInfo
+
 
 def get_confirmed(json_obj):
     max = json_obj['limit']
@@ -110,8 +112,6 @@ def get_pro_his(json_obj):
         res_item['deathsNum'].append(item[3])
         res_item['s_dates'].append(item[4])
         last_pro_name = item[0]
-    # show_data = {'type': '新增数', "pro_names": pro_names, "confirmedNum": confirmed_num, "curesNum": curesNum,
-    #              "deathsNum": deathsNum, "s_dates": s_dates}
     show_data = {'type': '新增数', 'res': res, "s_dates": s_dates}
     print(show_data)
     t = get_template('ncov/get_add.html')
@@ -120,7 +120,6 @@ def get_pro_his(json_obj):
 
 
 def get_single_pro_his(json_obj):
-    print("----1----")
     """
     获取单个省份历史变化
     :param json_obj:
@@ -182,5 +181,18 @@ def get_single_pro_his(json_obj):
     show_data = {'type': '新增数', 'res': res, "s_dates": s_dates}
     print(show_data)
     t = get_template('ncov/get_single_add.html')
+    s = t.render(show_data)
+    return s
+
+
+def get_pros():
+    """
+        获取单个省份历史变化
+        :param json_obj:
+        :return:
+        """
+    pros = ZoneInfo.objects.filter(pid=0).order_by('mid')
+    show_data = {'pros': pros}
+    t = get_template('ncov/pros.html')
     s = t.render(show_data)
     return s

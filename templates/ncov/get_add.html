@@ -6,48 +6,53 @@
     <title>{{ type }} </title>
 </head>
 <body>
+<div>
+</div>
 <div id="main" style="width: 95%;height:90%;position: absolute;text-align: center"></div>
 <script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    const myChart = echarts.init(document.getElementById('main'));
+    {#刷新图表#}
+    function flushChat() {
+        {# 基于准备好的dom，初始化echarts实例#}
+        const myChart = echarts.init(document.getElementById('main'));
 
-    // 指定图表的配置项和数据
-    const option = {
-            title: {
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: [{% for res_item in res %}'{{  res_item.pro_name  }}',{% endfor %}]
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: [ {% for item in s_dates %}
-                    '{{ item }}',{% endfor %}
+        {# 指定图表的配置项和数据#}
+        const option = {
+                title: {},
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: [{% for res_item in res %}'{{  res_item.pro_name  }}',{% endfor %}]
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: [ {% for item in s_dates %}
+                        '{{ item }}',{% endfor %}
+                    ]
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{% for res_item in res %}{
+                        name: '{{ res_item.pro_name }}',
+                        type: 'line',
+                        data: [{% for item in res_item.confirmedNum %}
+                            '{{ item }}',{% endfor %}] },
+                    {% endfor %}
                 ]
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{% for res_item in res %}{
-                    name: '{{ res_item.pro_name }}',
-                    type: 'line',
-                    data: [{% for item in res_item.confirmedNum %}
-                        '{{ item }}',{% endfor %}] },
-                {% endfor %}
-            ]
-        }
-    ;
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+            }
+        ;
+        {# 使用刚指定的配置项和数据显示图表。#}
+        myChart.setOption(option);
+    }
+    flushChat()
 </script>
 
 </body>
