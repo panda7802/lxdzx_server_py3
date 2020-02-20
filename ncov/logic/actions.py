@@ -193,6 +193,8 @@ def get_pros():
         """
     pros = ZoneInfo.objects.filter(pid=0).order_by('mid')
     show_data = {'pros': pros}
+    # for item in pros:
+    #     print(item.mid)
     t = get_template('ncov/pros.html')
     s = t.render(show_data)
     return s

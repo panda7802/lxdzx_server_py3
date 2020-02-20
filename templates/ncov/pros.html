@@ -102,7 +102,8 @@
 
     const pro_ids = Array();
     {% for item in pros %}
-        pro_ids.push({{ item.mid }});
+        console.log("{{ item.mid }}");
+        pro_ids.push("{{ item.mid }}");
     {% endfor %}
     console.log(pro_ids);
 
@@ -123,9 +124,13 @@
     function get_sel_pros() {
         sel_pros = "";
         for (let i in pro_ids) {
+            if (null == document.getElementById("name_" + pro_ids[i])) {
+                console.error("name_" + pro_ids[i]);
+                continue;
+            }
             const className = document.getElementById("name_" + pro_ids[i]).className;
             if (className === "sel") {
-                sel_pros += pro_ids[i] + ",";
+                sel_pros += "'" + pro_ids[i] + "',";
             }
         }
         if (sel_pros.endsWith(",")) {
@@ -145,7 +150,9 @@
             '&have_cures=' + have_cures +
             '&have_deaths=' + have_deaths;
         console.log(url);
-        window.location.href = url;
+        {#window.location.href = url;#}
+        {#self.location = url;#}
+        window.open(url);
     }
 
     get_sel_pros();

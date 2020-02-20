@@ -6,8 +6,16 @@
     <title>{{ type }} </title>
 </head>
 <body>
-<div id="main" style="width: 95%;height:90%;position: absolute;text-align: center"></div>
+<div>
+    <div id="main" style="width: 95%;height:90%;position: absolute;text-align: center"></div>
+{#    <button onclick="back()" style="position: absolute">返回</button>#}
+</div>
 <script type="text/javascript">
+    function back() {
+        console.log("back");
+        window.history.back(-1);
+    }
+
     // 基于准备好的dom，初始化echarts实例
     const myChart = echarts.init(document.getElementById('main'));
 

@@ -18,7 +18,7 @@ class ZoneInfo(models.Model):
 
     def __unicode__(self):
         try:
-            s = self.name
+            s = self.name + " - " + self.mid
         except Exception as e:
             logging.error(str(e))
             s = "get db err"
@@ -65,4 +65,3 @@ class CnovHisInfo(models.Model):
             logging.error(str(e))
             s = "get db err"
         return s
-
