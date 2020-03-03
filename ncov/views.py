@@ -23,9 +23,10 @@ def get_ncov(request, action):
     try:
         if action == "get_pros":
             s = get_pros()
+            return HttpResponse(s)
         elif action == "get_tj":
             s = get_tj()
-        return HttpResponse(s)
+            return HttpResponse(s)
     except Exception as e:
         logging.error(e)
         traceback.print_exc()
