@@ -198,3 +198,54 @@ def get_pros():
     t = get_template('ncov/pros.html')
     s = t.render(show_data)
     return s
+
+
+def get_tj():
+    """
+    排行榜
+    :param json_obj:
+    :return:
+    """
+    sql = '''
+    select distinct
+       c.name                                                                        as '上级地名',
+       a.name                                                                        as '地名',
+       a.people                                                                      as '人口',
+       b.confirmedNum                                                                as '确诊',
+       b.curesNum                                                                    as '治愈',
+       b.deathsNum                                                                   as '死亡',
+       CAST(round(ifnull((b.confirmedNum + 0.0) / a.people, 0) * 10000, 5) AS FLoat) as '确诊率(万分之)',
+       CAST(round(ifnull((b.curesNum + 0.0) / b.confirmedNum, 0) * 100, 2) AS FLoat)  as '治愈率(%)',
+       CAST(round(ifnull((b.deathsNum + 0.0) / b.confirmedNum, 0) * 100, 2) AS FLoat) as '死亡率(%)',
+       a.name in ('南京','天门')     as '关注'
+from ncov_zoneinfo a,
+     ncov_cnovinfo b,
+     ncov_zoneinfo c
+where a.mid = b.cid
+  and a.pid = c.mid
+        '''
+    print(sql)
+    cursor_data = connection.cursor()
+    cursor_data.execute(sql)
+    # raw = cursor_data.fetchone()  # 返回结果行游标直读向前，读取一条
+    datas = cursor_data.fetchall()  # 读取所有
+    if None is datas:
+        return "EMPTY"
+
+    # 市名
+    pro_names = []
+
+    # print(datas)
+    res = []
+    for item in datas:
+        res_item = {'p_name': item[0], "zone_name": [], "confirmedNum": [], "curesNum": [], "deathsNum": [],
+                    "confirmedRate": [], "curesRate": [], "deathsRate": [], 'zone_name': item[1],
+                    'confirmedNum': item[3], 'curesNum': item[4], 'deathsNum': item[5], 'confirmedRate': item[6],
+                    'curesRate': item[7], 'deathsRate': item[8]}
+        res.append(res_item)
+        # print(res_item)
+    show_data = {'type': '统计', 'res': res}
+    print(show_data)
+    t = get_template('ncov/get_tj.html')
+    s = t.render(show_data)
+    return s

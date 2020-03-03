@@ -100,6 +100,7 @@ def love_action(request, action):
         s = t_url_tools.get_response_str({}, success=False, msg=action + " 异常",
                                          err_code=t_url_tools.ERR_CODE_EXCEPTION)
     finally:
+        s = s.encode('utf-16','surrogatepass').decode('utf-16')
         logging.debug(s)
         return HttpResponse(s)
 
