@@ -18,6 +18,28 @@
             pointer-events: none;
         }
 
+        .up {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 10px solid #00F7DE;
+        }
+
+        .down {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 10px solid #00F7DE;
+        }
+
+        .gone {
+            display: none;
+        }
+
     </style>
 </head>
 
@@ -30,14 +52,14 @@
     <thead>
     <tr>
         <th class="cannot_sort">序号</th>
-        <th class="can_sort">上级地名</th>
-        <th class="can_sort">地名</th>
-        <th class="can_sort">确诊</th>
-        <th class="can_sort">治愈</th>
-        <th class="can_sort">死亡</th>
-        <th class="can_sort">确诊率(万分之)</th>
-        <th class="can_sort">治愈率(%)</th>
-        <th class="can_sort">死亡率(%)</th>
+        <th class="can_sort">上级地名<i id="th_1" class="gone"/></th>
+        <th class="can_sort">地名<i id="th_2" class="gone"/></th>
+        <th class="can_sort">确诊<i id="th_3" class="gone"/></th>
+        <th class="can_sort">治愈<i id="th_4" class="gone"/></th>
+        <th class="can_sort">死亡<i id="th_5" class="gone"/></th>
+        <th class="can_sort">确诊率(万分之)<i id="th_6" class="gone"/></th>
+        <th class="can_sort">治愈率(%)<i id="th_7" class="gone"/></th>
+        <th class="can_sort">死亡率(%)<i id="th_8" class="gone"/></th>
     </tr>
     </thead>
     <tbody>
@@ -76,35 +98,42 @@
 </table>
 </body>
 <script>
+    var last_click = -1;
     $(document).ready(function () {
             var sort_direction = 1; //排序标志，1为升序，-1为降序
             $('th').each(function (i) {
                     $(this).click(function () {
-                            if (sort_direction === 1) {
-                                sort_direction = -1;
+                            if (i === last_click) {
+                                sort_direction *= -1;
                             } else {
-                                sort_direction = 1;
+                                sort_direction = -1;
+                            }
+                            last_click = i;
+                            for (let thid = 1; thid <= 8; thid++) {
+                                document.getElementById("th_" + thid).className = "gone";
+                            }
+                            if (sort_direction > 0) {
+                                document.getElementById("th_" + i).className = "up";
+                            } else {
+                                document.getElementById("th_" + i).className = "down";
                             }
                             //获得行数组
                             var trarr = $('table').find('tbody > tr').get();
                             //数组排序
                             trarr.sort(function (a, b) {
-                                    var col1 = Number($(a).children('td').eq(i).text().toUpperCase());
-                                    var col2 = Number($(b).children('td').eq(i).text().toUpperCase());
-                                    return (col1 < col2) ? -sort_direction : (col1 > col2) ? sort_direction : 0;
+                                    if (i <= 2) {
+                                        var col1 = $(a).children('td').eq(i).text().trim();
+                                        var col2 = $(b).children('td').eq(i).text().trim();
+                                        return (col1.localeCompare(col2, "zh") < 0) ? -sort_direction : (col1.localeCompare(col2, "zh") > 0) ? sort_direction : 0;
+                                    } else {
+                                        var col1 = Number($(a).children('td').eq(i).text().toUpperCase());
+                                        var col2 = Number($(b).children('td').eq(i).text().toUpperCase());
+                                        return (col1 < col2) ? -sort_direction : (col1 > col2) ? sort_direction : 0;
+                                    }
                                     //返回-1表示a>b降序,返回1表示a<b升序,否则为0相等
                                 }
                             );
                             $.each(trarr, function (i, row) {
-                                    //将排好序的数组重新填回表格
-                                    {#console.log(i);#}
-                                    {#console.log(typeof row);#}
-                                    {#    console.log(trarr[i]);#}
-                                    {#    row.children("tr").each(function (j) {#}
-                                    {#        console.log( $(this).text());#}
-                                    {#    });#}
-                                    {#console.log("第" + i + "个td的内容：" + $(this).text());#}
-                                    {#console.log( trarr[i].find("tr").val());#}
                                     $('tbody').append(row);
                                 }
                             );
